@@ -1,0 +1,38 @@
+int potpin = A0; //nem sensörünün bağlandığı analog pini tanımlama
+//
+int durum=0; //değişken
+const int Enable_B = 10; //motor sürücüsünde ki motorun bağlandığı kısmın pininin tanımlanması
+const int inputB1 = 4; // motor sürücünün giriş pininin tanımlanması
+const int inputB2 = 5; // motor sürücünün giriş pininin tanımlanması
+
+void setup() {
+pinMode(Enable_B, OUTPUT); //pine çıkış görevi veriyoruz
+
+pinMode(inputB1, OUTPUT); //pine çıkış görevi veriyoruz
+pinMode(inputB2, OUTPUT); //pine çıkış görevi veriyoruz
+
+Serial.begin(9600); // seri ekran tanımlaması
+pinMode(13, OUTPUT); //pine çıkış görevi veriyoruz
+
+}
+
+void loop() {
+
+Serial.println(analogRead(prob));
+if(analogRead(prob)>600 && durum==0){ //nem sensöründen gelen verinin sorgusu
+// açık
+digitalWrite(Enable_B, HIGH); //motoru çalıştırma kodu
+digitalWrite(inputB1 , HIGH); //motoru çalıştırma kodu
+digitalWrite(inputB2, LOW); //motoru çalıştırma kodu
+durum=1;
+digitalWrite(13, HIGH); //yeşil ledi yakma
+digitalWrite(2, LOW); //kırmızı ledi söndürme
+}
+
+  if(analogRead(prob)<600 && durum==1){ // kapalı //nem sensöründen gelen verinin sorgusu
+  digitalWrite(Enable_B, LOW);                    // motoru durdurma kodu
+  durum=0;
+  digitalWrite(2, HIGH);                //kırmızı ledi yakma
+  digitalWrite(13, LOW);                //yeşil ledi söndürme
+  }
+ }
